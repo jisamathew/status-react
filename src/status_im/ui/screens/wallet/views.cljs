@@ -10,6 +10,7 @@
             [status-im.ui.screens.wallet.onboarding.views :as onboarding.views]
             [status-im.ui.screens.wallet.styles :as styles]
             [status-im.ui.screens.wallet.utils :as wallet.utils]
+            [status-im.extensions.registry :as registry]
             [status-im.utils.money :as money]
             status-im.ui.screens.wallet.collectibles.etheremon.views
             status-im.ui.screens.wallet.collectibles.cryptostrikers.views
@@ -115,7 +116,8 @@
   (group-by #(if (:nft? %) :nfts :tokens) v))
 
 (defn- asset-section [assets currency address-hex]
-  (let [{:keys [tokens nfts]} (group-assets assets)]
+  (let [{:keys [tokens]} (group-assets assets)
+        nfts (vals (registry/collectibles))]
     [react/view styles/asset-section
      [list/section-list
       {:default-separator? true
@@ -127,7 +129,7 @@
                              :render-fn (render-asset currency)}
                             {:title     (i18n/label :t/wallet-collectibles)
                              :key       :collectibles
-                             :data      nfts
+                             :data      (map #(assoc % :amount (money/bignumber 5)) nfts)
                              :render-fn #(render-collectible address-hex %)}]}]]))
 
 (views/defview wallet-root []
