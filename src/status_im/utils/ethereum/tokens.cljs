@@ -367,6 +367,10 @@
                     :name     "Domraider"
                     :address  "0x9af4f26941677c706cfecf6d3379ff01bb85d5ab"
                     :decimals 8}
+                   {:symbol   :SPANK
+                    :name     "SPANK"
+                    :address  "0x42d6622deCe394b54999Fbd73D108123806f6a18"
+                    :decimals 18}
                    ;; NOTE(goranjovic) : the following three tokens are removed from the Manage Assets list
                    ;; and automatically removed from user's selection by a migration. However, we still need
                    ;; them listed here in order to correctly display any previous transactions the user had
@@ -443,7 +447,8 @@
   (some #(when (= symbol (:symbol %)) %) (tokens-for chain)))
 
 (defn address->token [chain address]
-  (some #(when (= address (:address %)) %) (tokens-for chain)))
+  (some #(when (= (string/lower-case address)
+                  (string/lower-case (:address %))) %) (tokens-for chain)))
 
 (defn asset-for [chain symbol]
   (if (= (:symbol ethereum) symbol)
