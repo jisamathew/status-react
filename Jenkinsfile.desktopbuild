@@ -115,7 +115,7 @@ parallel(
                   -DEXTERNAL_MODULES_DIR='${external_modules_dir.join(";")}' \\
                   -DJS_BUNDLE_PATH='${workspace}/${packageFolder}/StatusIm.jsbundle' \\
                   -DCMAKE_CXX_FLAGS:='-DBUILD_FOR_BUNDLE=1'
-                """
+              """
               sh 'make'
             }
           }
@@ -169,7 +169,7 @@ parallel(
           stage('Build Linux binaries') {
             /* add path for QT installation binaries */
             env.PATH = "${qt_bin}:${env.PATH}"
-            dir ('desktop') {
+            dir('desktop') {
               sh 'rm -rf CMakeFiles CMakeCache.txt cmake_install.cmake Makefile'
               sh """
                 cmake -Wno-dev \\
@@ -185,7 +185,8 @@ parallel(
           stage('Prepare and create Linux AppImage') {
             dir(packageFolder) {
               sh 'rm -rf StatusImAppImage'
-              sh 'cp /home/maxr/qttools/StatusImAppImage.zip ./'
+              /* TODO this needs to be fixed: status-react/issues/5378 */
+              sh 'cp /opt/StatusImAppImage.zip ./'
               sh 'unzip ./StatusImAppImage.zip'
               sh 'rm -rf AppDir'
               sh 'mkdir AppDir'
