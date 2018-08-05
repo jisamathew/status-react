@@ -217,9 +217,9 @@ parallel(
               sh 'rm -f AppDir/usr/bin/StatusIm.AppImage'
             }
             sh """
-              ./linuxdeployqt-continuous-x86_64.AppImage -verbose=3 -appimage \\
+              ./linuxdeployqt-continuous-x86_64.AppImage \\
               ${packageFolder}/AppDir/usr/share/applications/StatusIm.desktop \\
-              -qmake=${qt_bin}/qmake
+              -verbose=3 -appimage -qmake=${qt_bin}/qmake
             """
             dir(packageFolder) {
               sh 'ldd AppDir/usr/bin/StatusIm'
