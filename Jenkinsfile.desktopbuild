@@ -87,13 +87,13 @@ def buildClojureScript() {
 }
 
 parallel(
-  'MacOS parallel build stream': {
+  'MacOS build': {
     timeout(90) {
       node('macos1') {
         load "$HOME/env.groovy"
 
         try {
-          stage('Git & Dependencies') {
+          stage('Git & Deps') {
             slackNotify('MacOS build started.')
             checkout scm
             doGitRebase()
@@ -120,7 +120,7 @@ parallel(
             }
           }
 
-          stage('Prepare and create MacOS Bundle') {
+          stage('Create MacOS Bundle') {
             dir(packageFolder) {
               sh '../scripts/download-package-files.sh "StatusIm.app.zip" "1Vkb6MD3nsmT02Az6rRRZywQSwCz1ZN9V"'
               sh 'unzip ./StatusIm.app.zip'
@@ -135,7 +135,7 @@ parallel(
             }
           }
 
-          stage('Archive built artifact') {
+          stage('Archive Artifact') {
             archiveArtifacts 'StatusImPackage/*.dmg'
           }
 
@@ -149,13 +149,13 @@ parallel(
       }
     }
   },
-  'Linux parallel build stream': {
+  'Linux build': {
     timeout(90) {
       node ('linux-01') {
         def qt_bin = '/opt/qt59/bin'
 
         try {
-          stage('Git & Dependencies') {
+          stage('Git & Deps') {
             slackNotify('Linux build started.')
             checkout scm
             doGitRebase()
@@ -182,7 +182,7 @@ parallel(
             }
           }
 
-          stage('Prepare and create Linux AppImage') {
+          stage('Create Linux AppImage') {
             dir(packageFolder) {
               sh 'rm -rf StatusImAppImage'
               /* TODO this needs to be fixed: status-react/issues/5378 */
@@ -228,7 +228,7 @@ parallel(
             }
           }
 
-          stage('Archive built artifact') {
+          stage('Archive Artifact') {
             archiveArtifacts 'StatusImPackage/*.AppImage'
           }
 
